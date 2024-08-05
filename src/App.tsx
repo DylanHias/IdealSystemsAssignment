@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { useFetchPosts } from './hooks/useFetchPosts';
+import ErrorDisplay from './screens/ErrorDisplay';
+import Loading from './components/Loading';
+import PostsDisplay from './screens/PostsDisplay';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const { isError, isSuccess, data: posts = [] } = useFetchPosts();
+
+  if (isError) return <ErrorDisplay />;
+
+  if (isSuccess)
+    return (
+      <div className="Container">
+        <PostsDisplay posts={posts} />
+      </div>
+    );
+
+  return <Loading />;
 }
 
 export default App;
